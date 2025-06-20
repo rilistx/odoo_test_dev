@@ -1,0 +1,3 @@
+[flake8]
+exclude = venv, odoo
+max-line-length=140

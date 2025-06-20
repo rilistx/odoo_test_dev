@@ -1,0 +1,89 @@
+<odoo>
+    <menuitem id="menu_estate_root" name="Estate" sequence="10"/>
+
+    <menuitem id="menu_estate_property_type" name="Property Types" parent="menu_estate_root" sequence="10"/>
+    <record id="action_property_type" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_estate_property_type_action" name="Property Types" parent="menu_estate_property_type" action="action_property_type" sequence="1"/>
+
+    <record id="action_property_type_offers" model="ir.actions.act_window">
+        <field name="name">Offers for Property Type</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_id.property_type_id', '=', active_id)]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_estate_property_tag" name="Property Tags" parent="menu_estate_root" sequence="20"/>
+    <record id="action_property_tag" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_estate_property_tag_action" name="Property Tags" parent="menu_estate_property_tag" action="action_property_tag" sequence="1"/>
+
+    <menuitem id="menu_estate_property_offer" name="Property Offers" parent="menu_estate_root" sequence="30"/>
+    <record id="action_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_estate_property_offer_action" name="Property Offers" parent="menu_estate_property_offer" action="action_property_offer" sequence="1"/>
+
+    <menuitem id="menu_estate_property" name="Properties" parent="menu_estate_root" sequence="40"/>
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'group_by': 'property_type_id'}</field>
+<!--        <field name="options">{'kanban_drag_and_drop': False}</field>-->
+    </record>
+    <menuitem id="menu_estate_property_action" name="Properties" parent="menu_estate_property" action="action_estate_property" sequence="1"/>
+
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="state"/>
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
+                <field name="tag_ids"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record">
+                            <div>
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div>
+                                <span t-if="record.state.raw_value == 'new'">
+                                    Expected Price: <field name="expected_price"/>
+                                </span>
+                                <span t-if="record.best_price.raw_value &gt; 0">
+                                    Best Offer: <field name="best_price"/>
+                                </span>
+                                <span t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
+                                    Selling Price: <field name="selling_price"/>
+                                </span>
+                            </div>
+                            <div>
+                                Tags:
+                                <ul>
+                                    <li t-foreach="record.tag_ids.value" t-as="tag">
+                                        <t t-esc="tag[1]"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

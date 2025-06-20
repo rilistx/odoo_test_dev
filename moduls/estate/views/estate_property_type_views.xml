@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_estate_property_type_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Types" default_order="sequence, name">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <header>
+                    <button name="action_open_offers" type="object" string="Статистика" class="oe_stat_button" icon="fa-bar-chart"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="sequence" widget="handle" />
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list string="Properties">
+                                    <field name="name"/>
+                                    <field name="selling_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" invisible="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

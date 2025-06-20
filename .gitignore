@@ -1,0 +1,29 @@
+# pycharm
+.idea/
+.DS_Store
+
+# nginx
+nginx
+
+# binastx
+.env
+env/
+ENV/
+.venv
+venv/
+
+# pipenv
+Pipfile
+Pipfile.lock
+
+# ssl certs
+ssl
+
+# client
+*.session
+
+# logger
+*.log
+
+# byte-compiled
+__pycache__/

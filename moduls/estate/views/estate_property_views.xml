@@ -1,0 +1,71 @@
+<odoo>
+  <record id="view_estate_property_list" model="ir.ui.view">
+    <field name="name">estate.property.list</field>
+    <field name="model">estate.property</field>
+    <field name="type">list</field>
+    <field name="arch" type="xml">
+      <list string="Properties">
+        <field name="name"/>
+        <field name="state"/>
+        <field name="selling_price"/>
+        <field name="buyer_id"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_estate_property_form" model="ir.ui.view">
+    <field name="name">estate.property.form</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <form string="Estate Property">
+        <header>
+          <button name="action_cancel" type="object" string="Отменить"
+                  modifiers="{'invisible': [('state', 'in', ['sold','cancelled'])]}"/>
+          <button name="action_set_sold" type="object" string="Продано" class="btn-primary"
+                  modifiers="{'invisible': [('state', 'not in', ['offer_accepted'])]}"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="selling_price" readonly="1"/>
+            <field name="buyer_id" readonly="1"/>
+            <field name="bedrooms"/>
+            <field name="availability_date"/>
+            <field name="active"/>
+            <field name="zip"/>
+            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
+            <field name="seller_id"/>
+            <field name="tag_ids" widget="many2many_tags"/>
+          </group>
+          <notebook>
+            <page string="Offers">
+              <field name="offer_ids"
+                     modifiers="{'readonly': [('state', 'in', ['offer_accepted', 'sold', 'cancelled'])]}">
+                <list editable="bottom">
+                  <field name="partner_id"/>
+                  <field name="price"/>
+                  <field name="status"/>
+                  <button name="action_accept" type="object" string="Принять" icon="fa-check"
+                          modifiers="{'invisible':[('status','!=',False)]}"/>
+                  <button name="action_refuse" type="object" string="Отклонить" icon="fa-times"
+                          modifiers="{'invisible':[('status','!=',False)]}"/>
+                </list>
+              </field>
+            </page>
+            <page string="Details">
+              <group>
+                <field name="living_area"/>
+                <field name="garden"/>
+                <field name="garden_area" modifiers="{'invisible': [('garden', '=', False)]}"/>
+                <field name="orientation" modifiers="{'invisible': [('garden', '=', False)]}"/>
+                <field name="total_area" readonly="1"/>
+                <field name="best_price" readonly="1"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+</odoo>
